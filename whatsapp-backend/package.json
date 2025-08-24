@@ -1,0 +1,17 @@
+{
+  "name": "iibs-whatsapp-bot-backend",
+  "version": "1.0.0",
+  "description": "Backend webhook for the IIBS AI Career Counselor WhatsApp bot.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@google/genai": "^1.14.0",
+    "axios": "^1.7.2",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}

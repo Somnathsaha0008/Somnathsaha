@@ -4,21 +4,66 @@
   <head>
     <meta charset="UTF-g" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f172a" />
+    <link rel="manifest" href="/manifest.json" />
     <title>IIBS AI Career Counselor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Poppins', 'sans-serif'],
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+      }
+      .typing-cursor {
+        display: inline-block;
+        width: 8px;
+        height: 1.2em;
+        background-color: #94a3b8; /* slate-400 */
+        margin-left: 4px;
+        animation: blink 1s infinite;
+        vertical-align: text-bottom;
+        border-radius: 2px;
+      }
+    </style>
   <script type="importmap">
 {
   "imports": {
     "react": "https://esm.sh/react@^19.1.1",
     "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
     "react/": "https://esm.sh/react@^19.1.1/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.14.0"
+    "@google/genai": "https://esm.sh/@google/genai@^1.14.0",
+    "express": "https://esm.sh/express@^5.1.0",
+    "body-parser": "https://esm.sh/body-parser@^2.2.0",
+    "dotenv/": "https://esm.sh/dotenv@^17.2.1/",
+    "axios": "https://esm.sh/axios@^1.11.0",
+    "crypto": "https://esm.sh/crypto@^1.0.1"
   }
 }
 </script>
 </head>
-  <body class="bg-slate-900">
+  <body class="bg-gradient-to-br from-slate-900 via-[#0d1430] to-slate-900">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>
