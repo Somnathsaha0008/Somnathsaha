@@ -1,5 +1,5 @@
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { Header } from './components/Header';
 import { ChatWindow } from './components/ChatWindow';
 import { getChatStream, isApiConfigured } from './services/geminiService';
@@ -14,22 +14,18 @@ const App: React.FC = () => {
   const [isTtsEnabled, setIsTtsEnabled] = useState<boolean>(true);
   const { speak, cancel, isSpeaking, hasSynthesisSupport } = useSpeechSynthesis();
 
+  const getInitialMessage = (text: string) => ({
+    id: `bot-initial-${Date.now()}`,
+    text,
+    sender: Sender.BOT,
+  });
+
   useEffect(() => {
     if (isApiConfigured) {
-      setMessages([
-        {
-          id: `bot-initial-${Date.now()}`,
-          text: INITIAL_BOT_MESSAGE,
-          sender: Sender.BOT,
-        },
-      ]);
+      setMessages([getInitialMessage(INITIAL_BOT_MESSAGE)]);
     } else {
       setMessages([
-        {
-          id: `bot-error-${Date.now()}`,
-          text: "Welcome! I'm the IIBS AI Career Counselor.\n\nIt seems the application is not configured correctly, so I'm unable to connect to my services. Please contact the administrator to set up the API key.",
-          sender: Sender.BOT,
-        },
+        getInitialMessage("Welcome! I'm the IIBS AI Career Counselor.\n\nIt seems the application is not configured correctly, so I'm unable to connect to my services. Please contact the administrator to set up the API key.")
       ]);
     }
   }, []);
@@ -43,6 +39,18 @@ const App: React.FC = () => {
       return newState;
     });
   }, [isSpeaking, cancel]);
+
+  const handleClearChat = useCallback(() => {
+    if (isSpeaking) {
+      cancel();
+    }
+    // Only reset if API is configured, otherwise the initial error message is lost.
+    if (isApiConfigured) {
+      setMessages([getInitialMessage(INITIAL_BOT_MESSAGE)]);
+    }
+  }, [isSpeaking, cancel]);
+
+  const canClear = useMemo(() => messages.some(m => m.sender === Sender.USER), [messages]);
 
   const handleSendMessage = useCallback(async (text: string) => {
     if (!text.trim() || !isApiConfigured) return;
@@ -105,6 +113,8 @@ const App: React.FC = () => {
         isTtsEnabled={isTtsEnabled}
         onTtsToggle={handleTtsToggle}
         hasSynthesisSupport={hasSynthesisSupport}
+        onClearChat={handleClearChat}
+        canClear={canClear}
       />
       <main className="flex-1 overflow-hidden">
         <ChatWindow
